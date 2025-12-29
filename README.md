@@ -111,22 +111,6 @@ Contributions are welcome. Suggested workflow:
 
 Stick to the existing code style; the project already includes ESLint config.
 
-## License
 
-This project does not include a license file by default. Add a `LICENSE` file to declare how you want to license this code (for example, MIT).
-
-## Troubleshooting
-
-- If styles don't load, ensure Tailwind is configured and `src/index.css` is imported in `main.tsx`.
-- If the dev server fails to start, delete `node_modules` and reinstall dependencies.
-- If you run into type errors, ensure your TypeScript version is compatible with the project and run `npm run build` to see compiler output.
-
-If you'd like, I can also:
-
-- add a basic `LICENSE` (MIT) file
-- add a small CONTRIBUTING.md with PR checklist
-- extract actual `package.json` scripts and update this README to match exactly (requires read access to `package.json` in the workspace)
-
----
 
 If you want any wording changed or extra sections (screenshots, demo link, CI badges), tell me what to include and I will update the README.
