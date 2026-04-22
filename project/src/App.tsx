@@ -1,150 +1,175 @@
 import { useState } from 'react';
-import { Coins } from 'lucide-react';
 
 function App() {
-  const [side1, setSide1] = useState('Heads');
-  const [side2, setSide2] = useState('Tails');
+  const [optionA, setOptionA] = useState('Pizza');
+  const [optionB, setOptionB] = useState('Tacos');
   const [isFlipping, setIsFlipping] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState('');
+  const [showBurst, setShowBurst] = useState(false);
 
   const handleToss = () => {
     setError('');
 
-    if (!side1.trim() || !side2.trim()) {
-      setError('Both coin faces must be named');
+    if (!optionA.trim() || !optionB.trim()) {
+      setError('Both options must be filled in');
       return;
     }
 
-    if (side1.trim() === side2.trim()) {
-      setError('Coin faces must have different names');
+    if (optionA.trim().toLowerCase() === optionB.trim().toLowerCase()) {
+      setError('Options must be different');
       return;
     }
 
     setIsFlipping(true);
     setResult(null);
+    setShowBurst(true);
 
     setTimeout(() => {
-      const randomValue = Math.random();
-      const winner = randomValue < 0.5 ? side1 : side2;
+      const winner = Math.random() < 0.5 ? optionA : optionB;
       setResult(winner);
+    }, 1200);
+
+    setTimeout(() => {
       setIsFlipping(false);
     }, 1500);
+
+    setTimeout(() => {
+      setShowBurst(false);
+    }, 2100);
   };
 
   return (
-    <div className="min-h-screen colorful-bg flex items-center justify-center p-6">
-      <div className="max-w-md w-full">
-        <div className="glass-card rounded-3xl shadow-2xl p-8">
-          <div className="flex items-center justify-center mb-8">
-            <div className="bg-white/30 p-4 rounded-full backdrop-blur-sm">
-              <Coins className="w-12 h-12 text-white" />
-            </div>
-          </div>
+    <div className="min-h-screen bg-[var(--background)] text-[var(--on-background)] font-['Spline_Sans'] flex flex-col items-center justify-center relative overflow-hidden">
+      <div className="absolute top-10 left-1/2 -translate-x-1/2 md:left-12 md:translate-x-0 z-10">
+        <span className="text-2xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-fuchsia-400 font-['Space_Grotesk'] tracking-tight">
+          DECIDR
+        </span>
+      </div>
 
-          <h1 className="text-3xl font-extrabold text-center text-white mb-2 tracking-tight">
-            Coin Tosser
-          </h1>
-          <p className="text-center text-white/90 mb-8">
-            Fair and unbiased coin flip
+      <main className="w-full max-w-7xl px-5 sm:px-10 flex flex-col items-center justify-center flex-grow py-16">
+        <section className="text-center mb-12 max-w-2xl animate-fade-up">
+          <p className="text-xs uppercase tracking-[0.4em] text-[var(--on-surface-variant)] mb-4">
+            fate engine
           </p>
+          <h1 className="font-['Space_Grotesk'] text-4xl sm:text-6xl font-bold text-[var(--primary)] mb-4">
+            Fate in a Flick.
+          </h1>
+          <p className="text-lg sm:text-xl text-[var(--on-surface-variant)]">
+            Stop overthinking. One toss, one truth.
+          </p>
+        </section>
 
-          <div className="space-y-4 mb-8">
-            <div>
-              <label htmlFor="side1" className="block text-sm font-medium text-white/90 mb-2">
-                First Side
+        <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative">
+          <div className="lg:col-span-4 order-2 lg:order-1">
+            <div className="bg-[var(--surface-container)] p-6 rounded-xl neon-border custom-glow transition-all hover:scale-[1.02]">
+              <label className="font-['Space_Grotesk'] text-xs uppercase tracking-[0.35em] text-[var(--primary)] mb-4 block">
+                Option A
               </label>
               <input
-                id="side1"
+                className="w-full bg-transparent border-0 border-b-2 border-[var(--outline-variant)] focus:border-[var(--primary-container)] focus:ring-0 text-2xl sm:text-3xl font-['Space_Grotesk'] text-[var(--on-surface)] transition-all placeholder:text-[color:var(--surface-variant)]/40"
+                placeholder="Pizza"
                 type="text"
-                value={side1}
-                onChange={(e) => setSide1(e.target.value)}
+                maxLength={24}
+                value={optionA}
                 disabled={isFlipping}
-                className="w-full px-4 py-3 border-2 border-white/20 rounded-lg bg-white/10 text-white placeholder-white/60 focus:ring-4 focus:ring-brand-300 focus:border-transparent transition-all disabled:bg-white/5 disabled:cursor-not-allowed"
-                placeholder="e.g., Heads"
-                maxLength={20}
-              />
-            </div>
-
-            <div>
-              <label htmlFor="side2" className="block text-sm font-medium text-white/90 mb-2">
-                Second Side
-              </label>
-              <input
-                id="side2"
-                type="text"
-                value={side2}
-                onChange={(e) => setSide2(e.target.value)}
-                disabled={isFlipping}
-                className="w-full px-4 py-3 border-2 border-white/20 rounded-lg bg-white/10 text-white placeholder-white/60 focus:ring-4 focus:ring-brand-300 focus:border-transparent transition-all disabled:bg-white/5 disabled:cursor-not-allowed"
-                placeholder="e.g., Tails"
-                maxLength={20}
+                onChange={(event) => setOptionA(event.target.value)}
               />
             </div>
           </div>
 
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded">
-              <p className="text-red-700 text-sm font-medium">{error}</p>
-            </div>
-          )}
+          <div className="lg:col-span-4 flex flex-col items-center justify-center order-1 lg:order-2 py-4">
+            <div className="relative group">
+              <div className="absolute -inset-12 bg-[var(--primary-container)]/20 rounded-full blur-3xl transition-all duration-700 group-hover:bg-[var(--primary-container)]/40"></div>
 
-          <button
-            onClick={handleToss}
-            disabled={isFlipping}
-            className="w-full btn-gradient font-semibold py-4 px-6 rounded-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-xl"
-          >
-            {isFlipping ? 'Flipping...' : 'Toss Coin'}
-          </button>
-
-          <div className="mt-8 min-h-[120px] flex items-center justify-center">
-            {isFlipping && (
-              <div className="flex flex-col items-center">
-                <div className="relative w-32 h-32 mb-4 perspective">
-                  <div className="absolute inset-0 animate-spin-coin" style={{animationDuration: '0.8s'}}>
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-400 via-sunset-500 to-accent-500 shadow-2xl flex items-center justify-center">
-                      <div className="absolute inset-1 rounded-full bg-gradient-to-t from-brand-700 to-brand-400 opacity-40"></div>
-                      <div className="absolute inset-4 rounded-full border-2 border-white/30 opacity-60"></div>
-                      <div className="text-white font-bold text-2xl">$</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-1 mt-2">
-                  <p className="text-white/90 font-semibold text-center">Flipping...</p>
-                  <div className="flex gap-1 justify-center">
-                    <div className="w-2 h-2 rounded-full bg-brand-500 animate-bounce" style={{animationDelay: '0s'}}></div>
-                    <div className="w-2 h-2 rounded-full bg-sunset-500 animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                    <div className="w-2 h-2 rounded-full bg-accent-500 animate-bounce" style={{animationDelay: '0.4s'}}></div>
-                  </div>
-                </div>
+              <div
+                className={`w-48 h-48 sm:w-56 sm:h-56 rounded-full coin-gradient flex items-center justify-center relative z-10 border-4 border-white/20 shadow-2xl transition-transform duration-500 cursor-pointer ${
+                  isFlipping ? 'coin-toss' : 'coin-idle'
+                }`}
+              >
+                <span className="material-symbols-outlined text-7xl sm:text-8xl text-white" data-weight="fill">
+                  token
+                </span>
+                <span className="absolute inset-3 rounded-full border border-white/30"></span>
+                <span className="absolute inset-8 rounded-full border border-white/20"></span>
               </div>
-            )}
 
-            {result && !isFlipping && (
-              <div className="flex flex-col items-center animate-bounce-in">
-                <div className="bg-gradient-to-br from-accent-400 to-brand-600 rounded-2xl px-8 py-6 shadow-2xl">
-                  <p className="text-white text-2xl font-bold text-center">
+              {showBurst && (
+                <>
+                  <span className="burst-ring burst-ring-lg"></span>
+                  <span className="burst-ring burst-ring-md"></span>
+                  <span className="burst-ring burst-ring-sm"></span>
+                  <span className="burst-spark burst-spark-1"></span>
+                  <span className="burst-spark burst-spark-2"></span>
+                  <span className="burst-spark burst-spark-3"></span>
+                </>
+              )}
+
+              <button
+                onClick={handleToss}
+                disabled={isFlipping}
+                className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-[var(--on-background)] text-[var(--background)] px-10 py-4 rounded-full font-['Space_Grotesk'] text-xl font-black uppercase tracking-tight hover:scale-110 hover:bg-white active:scale-95 transition-all shadow-2xl z-20 whitespace-nowrap disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {isFlipping ? 'Tossing...' : 'Toss Coin'}
+              </button>
+            </div>
+
+            <div className="mt-16 min-h-[80px] flex flex-col items-center justify-center" aria-live="polite">
+              {error && (
+                <div className="mb-4 px-6 py-3 rounded-full border border-red-500/50 bg-red-500/10 text-red-200 text-sm">
+                  {error}
+                </div>
+              )}
+
+              {isFlipping && !error && (
+                <p className="text-sm uppercase tracking-[0.3em] text-[var(--on-surface-variant)]">
+                  Calculating destiny...
+                </p>
+              )}
+
+              {!isFlipping && result && (
+                <div className="result-chip">
+                  <p className="text-2xl sm:text-3xl font-bold text-white text-center font-['Space_Grotesk']">
                     {result}
                   </p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-white/70 mt-2">winner</p>
                 </div>
-                <p className="text-white/80 mt-4 font-medium">Winner!</p>
-              </div>
-            )}
+              )}
 
-            {!result && !isFlipping && (
-              <p className="text-white/80 text-center">
-                Enter both sides and toss the coin
-              </p>
-            )}
+              {!isFlipping && !result && !error && (
+                <p className="text-[var(--on-surface-variant)] text-sm">
+                  Enter two options to begin.
+                </p>
+              )}
+            </div>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-white/10">
-            <p className="text-xs text-white/70 text-center">
-              Uses cryptographically secure randomization for fair results
-            </p>
+          <div className="lg:col-span-4 order-3">
+            <div className="bg-[var(--surface-container)] p-6 rounded-xl neon-border custom-glow transition-all hover:scale-[1.02]">
+              <label className="font-['Space_Grotesk'] text-xs uppercase tracking-[0.35em] text-[var(--secondary)] mb-4 block">
+                Option B
+              </label>
+              <input
+                className="w-full bg-transparent border-0 border-b-2 border-[var(--outline-variant)] focus:border-[var(--secondary-container)] focus:ring-0 text-2xl sm:text-3xl font-['Space_Grotesk'] text-[var(--on-surface)] transition-all placeholder:text-[color:var(--surface-variant)]/40"
+                placeholder="Tacos"
+                type="text"
+                maxLength={24}
+                value={optionB}
+                disabled={isFlipping}
+                onChange={(event) => setOptionB(event.target.value)}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      </main>
+
+      <footer className="w-full max-w-7xl mx-auto px-8 py-10 mt-auto border-t border-purple-900/10">
+        <div className="flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity">
+          <span className="font-['Space_Grotesk'] text-xs uppercase tracking-[0.2em] text-slate-500">
+            © 2026 DECIDR. NO REGRETS.
+          </span>
+        </div>
+      </footer>
     </div>
   );
 }
